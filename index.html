@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Performance — Emerique Henri</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #f4f4f7; color: #1a1a2e; }
+  
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    padding: 40px;
+    text-align: center;
+  }
+  .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .header p { opacity: 0.7; font-size: 14px; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+
+  .section {
+    background: white;
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f0f0f5;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title .num {
+    background: #1a1a2e;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  /* Tableaux OKR */
+  .quarter-block { margin-bottom: 28px; }
+  .quarter-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px 6px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .q1-25 { background: #6c757d; }
+  .q2-25 { background: #0077b6; }
+  .q3-25 { background: #2d9e5f; }
+  .q4-25 { background: #e07b00; }
+  .q1-26 { background: #c0392b; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    background: #f8f8fc;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #666;
+    padding: 10px 12px;
+    text-align: left;
+  }
+  td { padding: 10px 12px; font-size: 13px; border-bottom: 1px solid #f0f0f5; }
+  tr:last-child td { border-bottom: none; }
+
+  .progress-bar {
+    background: #eee;
+    border-radius: 4px;
+    height: 8px;
+    width: 100px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 4px;
+  }
+  .fill-red { background: #e74c3c; }
+  .fill-orange { background: #e07b00; }
+  .fill-yellow { background: #f1c40f; }
+  .fill-green { background: #2d9e5f; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-green { background: #d4f5e2; color: #1a7a45; }
+  .badge-red { background: #fde8e8; color: #c0392b; }
+  .badge-orange { background: #fef3e2; color: #e07b00; }
+
+  .note-box {
+    background: #fff8e7;
+    border-left: 3px solid #f1c40f;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    margin-top: 10px;
+    color: #7a6000;
+  }
+
+  .summary-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+  .summary-table th { background: #1a1a2e; color: white; padding: 10px 16px; font-size: 13px; }
+  .summary-table td { padding: 10px 16px; font-size: 13px; border-bottom: 1px solid #f0f0f5; text-align: center; }
+  .summary-table tr:last-child td { border-bottom: none; }
+
+  /* Points saillants */
+  .highlights { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .highlight-card {
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 13px;
+  }
+  .highlight-card.positive { background: #d4f5e2; border-left: 3px solid #2d9e5f; }
+  .highlight-card.negative { background: #fde8e8; border-left: 3px solid #c0392b; }
+  .highlight-card h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+  .highlight-card ul { padding-left: 16px; }
+  .highlight-card li { margin-bottom: 4px; }
+
+  /* Champs éditables */
+  .editable {
+    width: 100%;
+    border: 1px solid #e0e0e8;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #1a1a2e;
+    background: #fafafa;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.2s;
+  }
+  .editable:focus { outline: none; border-color: #1a1a2e; background: white; }
+  .editable-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    margin-top: 16px;
+    display: block;
+  }
+
+  /* SMART */
+  .smart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .smart-card {
+    border: 1px solid #e0e0e8;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .smart-letter {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1a1a2e;
+    margin-bottom: 4px;
+  }
+  .smart-desc { font-size: 12px; color: #888; margin-bottom: 10px; }
+
+  /* OKRs plan de perf */
+  .okr-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f5;
+    align-items: center;
+  }
+  .okr-row.header-row {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #888;
+    padding-bottom: 8px;
+  }
+  .okr-input {
+    border: 1px solid #e0e0e8;
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-size: 13px;
+    font-family: inherit;
+    width: 100%;
+    background: #fafafa;
+  }
+  .okr-input:focus { outline: none; border-color: #1a1a2e; background: white; }
+
+  /* Suivi */
+  .suivi-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .suivi-card {
+    border: 1px solid #e0e0e8;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .suivi-icon { font-size: 28px; margin-bottom: 8px; }
+  .suivi-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .suivi-desc { font-size: 12px; color: #888; }
+
+  /* Attentes comportementales */
+  .attente-item {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f0f5;
+    align-items: flex-start;
+  }
+  .attente-item:last-child { border-bottom: none; }
+  .attente-icon { font-size: 20px; flex-shrink: 0; }
+  .attente-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .attente-content p { font-size: 13px; color: #555; }
+
+  /* Prochaines étapes */
+  .etape-item {
+    display: flex;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f0f5;
+    align-items: flex-start;
+  }
+  .etape-item:last-child { border-bottom: none; }
+  .etape-num {
+    background: #1a1a2e;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .etape-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .etape-content p { font-size: 13px; color: #555; }
+
+  /* Signature */
+  .signature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px; }
+  .sig-box {
+    border: 1px solid #e0e0e8;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+  }
+  .sig-box h4 { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .sig-box p { font-size: 12px; color: #888; margin-bottom: 16px; }
+  .sig-line {
+    border-bottom: 1px solid #ccc;
+    height: 40px;
+    margin-top: 10px;
+  }
+
+  /* Save button */
+  .save-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e0e0e8;
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+  }
+  .save-status { font-size: 13px; color: #888; }
+  .save-status.saved { color: #2d9e5f; }
+  .btn-save {
+    background: #1a1a2e;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-save:hover { background: #2d2d5e; }
+  .btn-print {
+    background: white;
+    color: #1a1a2e;
+    border: 1px solid #e0e0e8;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  .pb { padding-bottom: 80px; }
+
+  @media print {
+    .save-bar { display: none; }
+    .pb { padding-bottom: 0; }
+    body { background: white; }
+    .section { box-shadow: none; border: 1px solid #eee; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Plan de Performance — Emerique Henri</h1>
+  <p>Chargée de Marketing | Document confidentiel</p>
+</div>
+
+<div class="container pb">
+
+  <!-- SECTION 1 : CONSTAT FACTUEL -->
+  <div class="section">
+    <div class="section-title"><span class="num">1</span> Constat factuel — Résultats OKRs</div>
+
+    <!-- Q1 2025 -->
+    <div class="quarter-block">
+      <div class="quarter-title q1-25">
+        <span>Q1 2025 — Améliorer la notoriété</span>
+        <span>Score global : 43,95%</span>
+      </div>
+      <table>
+        <tr><th>OKR</th><th>Réalisé</th><th>Cible</th><th>Progression</th></tr>
+        <tr>
+          <td>Posts LinkedIn</td><td>19</td><td>36</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-orange" style="width:53%"></span></span>53%</td>
+        </tr>
+        <tr>
+          <td>Posts TikTok</td><td>30</td><td>36</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-green" style="width:83%"></span></span>83%</td>
+        </tr>
+        <tr>
+          <td>Posts Instagram</td><td>29</td><td>36</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-green" style="width:81%"></span></span>81%</td>
+        </tr>
+        <tr>
+          <td>Interviews clients</td><td>0</td><td>2</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-red" style="width:0%"></span></span>0%</td>
+        </tr>
+        <tr>
+          <td>Coût par follower</td><td>0,57€</td><td>0,50€</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-orange" style="width:29%"></span></span>29%</td>
+        </tr>
+        <tr>
+          <td>Followers LinkedIn</td><td>29</td><td>150</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-red" style="width:19%"></span></span>19%</td>
+        </tr>
+        <tr>
+          <td>Followers Instagram</td><td>55</td><td>450</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-red" style="width:12%"></span></span>12%</td>
+        </tr>
+        <tr>
+          <td>Vues totales TikTok/Insta</td><td>448 953</td><td>600 000</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-yellow" style="width:75%"></span></span>75%</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Q2 2025 -->
+    <div class="quarter-block">
+      <div class="quarter-title q2-25">
+        <span>Q2 2025 — Éduquer sur la valeur perçue de la tech en B2B</span>
+        <span>Score global : 55,72%</span>
+      </div>
+      <table>
+        <tr><th>OKR</th><th>Réalisé</th><th>Cible</th><th>Progression</th></tr>
+        <tr>
+          <td>Vues globales (tout réseau)</td><td>106 287</td><td>300 000</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-orange" style="width:35%"></span></span>35%</td>
+        </tr>
+        <tr>
+          <td>Téléchargements livre blanc tech</td><td>5</td><td>50</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-red" style="width:10%"></span></span>10%</td>
+        </tr>
+        <tr>
+          <td>Interviews clients axés tech</td><td>2</td><td>3</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-yellow" style="width:67%"></span></span>67%</td>
+        </tr>
+        <tr>
+          <td>Uses cases axés tech</td><td>8</td><td>6</td>
+          <td><span class="badge badge-green">✅ Completed — 133%</span></td>
+        </tr>
+        <tr>
+          <td>Posts Instagram techniques</td><td>9</td><td>18</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-orange" style="width:50%"></span></span>50%</td>
+        </tr>
+        <tr>
+          <td>Posts LinkedIn techniques</td><td>7</td><td>18</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-orange" style="width:39%"></span></span>39%</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Q3 2025 -->
+    <div class="quarter-block">
+      <div class="quarter-title q3-25">
+        <span>Q3 2025 — Mieux communiquer et éduquer sur la tech en B2B</span>
+        <span>Score global : 135,87% ⭐</span>
+      </div>
+      <table>
+        <tr><th>OKR</th><th>Réalisé</th><th>Cible</th><th>Progression</th></tr>
+        <tr>
+          <td>Vidéos virales TikTok (100k+ vues)</td><td>2</td><td>2</td>
+          <td><span class="badge badge-green">✅ Completed</span></td>
+        </tr>
+        <tr>
+          <td>Articles optimisés postés</td><td>3</td><td>12</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-orange" style="width:25%"></span></span>25%</td>
+        </tr>
+        <tr>
+          <td>Posts LinkedIn techniques</td><td>8</td><td>18</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-orange" style="width:44%"></span></span>44%</td>
+        </tr>
+        <tr>
+          <td>Posts Instagram techniques</td><td>9</td><td>18</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-orange" style="width:50%"></span></span>50%</td>
+        </tr>
+        <tr>
+          <td>Uses cases axés tech</td><td>6</td><td>6</td>
+          <td><span class="badge badge-green">✅ Completed</span></td>
+        </tr>
+        <tr>
+          <td>Interviews clients axés tech</td><td>1</td><td>3</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-orange" style="width:33%"></span></span>33%</td>
+        </tr>
+        <tr>
+          <td>Téléchargements livre blanc</td><td>7</td><td>50</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-red" style="width:14%"></span></span>14%</td>
+        </tr>
+        <tr>
+          <td>Vues globales (tout réseau)</td><td>3 240 944</td><td>450 000</td>
+          <td><span class="badge badge-green">✅ 720% — Exceptionnel</span></td>
+        </tr>
+      </table>
+      <div class="note-box">⚠️ Le score de 135% est porté par les 3,2M de vues (objectif initial : 450k). Les OKRs qualitatifs (articles, interviews, livre blanc) restent significativement en dessous des objectifs.</div>
+    </div>
+
+    <!-- Q4 2025 -->
+    <div class="quarter-block">
+      <div class="quarter-title q4-25">
+        <span>Q4 2025 — Mieux communiquer et éduquer sur la tech en B2B</span>
+        <span>Score global : 35,20%</span>
+      </div>
+      <table>
+        <tr><th>OKR</th><th>Réalisé</th><th>Cible</th><th>Progression</th></tr>
+        <tr>
+          <td>Reach global LinkedIn (FFY)</td><td>13 401</td><td>75 000</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-red" style="width:18%"></span></span>18%</td>
+        </tr>
+        <tr>
+          <td>Articles optimisés postés</td><td>5</td><td>20</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-red" style="width:25%"></span></span>25%</td>
+        </tr>
+        <tr>
+          <td>Posts LinkedIn techniques</td><td>12</td><td>18</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-yellow" style="width:67%"></span></span>67%</td>
+        </tr>
+        <tr>
+          <td>Posts Instagram techniques</td><td>9</td><td>18</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-orange" style="width:50%"></span></span>50%</td>
+        </tr>
+        <tr>
+          <td>Uses cases axés tech</td><td>2</td><td>6</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-orange" style="width:33%"></span></span>33%</td>
+        </tr>
+        <tr>
+          <td>Interviews clients axés tech</td><td>1</td><td>3</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-orange" style="width:33%"></span></span>33%</td>
+        </tr>
+        <tr>
+          <td>Vues globales (tout réseau)</td><td>202 177</td><td>1 000 000</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-red" style="width:20%"></span></span>20%</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Q1 2026 -->
+    <div class="quarter-block">
+      <div class="quarter-title q1-26">
+        <span>Q1 2026 — Développer la visibilité et amorcer le social selling</span>
+        <span>Score global : 27,22%</span>
+      </div>
+      <table>
+        <tr><th>OKR</th><th>Réalisé</th><th>Cible</th><th>Progression</th></tr>
+        <tr>
+          <td>Leads via social selling</td><td>0</td><td>5</td>
+          <td><span class="badge badge-red">0% — Non démarré</span></td>
+        </tr>
+        <tr>
+          <td>Conversations qualifiées LinkedIn</td><td>0</td><td>25</td>
+          <td><span class="badge badge-red">0% — Non démarré</span></td>
+        </tr>
+        <tr>
+          <td>Posts TikTok</td><td>1</td><td>24</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-red" style="width:4%"></span></span>4%</td>
+        </tr>
+        <tr>
+          <td>Posts Instagram</td><td>19</td><td>24</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-green" style="width:79%"></span></span>79%</td>
+        </tr>
+        <tr>
+          <td>Posts LinkedIn</td><td>18</td><td>40</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-orange" style="width:45%"></span></span>45%</td>
+        </tr>
+        <tr>
+          <td>Reach LinkedIn cumulé</td><td>21 000</td><td>60 000</td>
+          <td><span class="progress-bar"><span class="progress-fill fill-orange" style="width:35%"></span></span>35%</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Tableau de synthèse -->
+    <table class="summary-table">
+      <tr>
+        <th>Quarter</th><th>Score global</th><th>Statut</th><th>Tendance</th>
+      </tr>
+      <tr>
+        <td>Q1 2025</td><td>43,95%</td><td>Alternance</td><td>—</td>
+      </tr>
+      <tr>
+        <td>Q2 2025</td><td>55,72%</td><td>Alternance</td><td>↗ +12pts</td>
+      </tr>
+      <tr>
+        <td>Q3 2025</td><td>135,87%</td><td>Alternance</td><td>↗ Pic de performance</td>
+      </tr>
+      <tr>
+        <td>Q4 2025</td><td>35,20%</td><td>Transition CDI</td><td>↘ -100pts</td>
+      </tr>
+      <tr style="background:#fde8e8;">
+        <td><strong>Q1 2026</strong></td><td><strong>27,22%</strong></td><td><strong>CDI</strong></td><td><strong>↘ Tendance baissière</strong></td>
+      </tr>
+    </table>
+
+    <!-- Points saillants -->
+    <div class="highlights">
+      <div class="highlight-card positive">
+        <h4>✅ Points positifs</h4>
+        <ul>
+          <li>Forte capacité sur le volume Instagram (79% Q1 2026)</li>
+          <li>Pic exceptionnel Q3 2025 (3,2M vues — objectif x7)</li>
+          <li>Régularité sur la production de contenu court format</li>
+          <li>Uses cases tech Q2 et Q3 : objectifs atteints et dépassés</li>
+        </ul>
+      </div>
+      <div class="highlight-card negative">
+        <h4>⚠️ Points d'attention</h4>
+        <ul>
+          <li>Social selling : 0 lead, 0 conversation en Q1 2026 — objectif non démarré</li>
+          <li>TikTok : 1 post sur 24 prévus (4%) en Q1 2026</li>
+          <li>Tendance baissière constante depuis Q3 2025 : -100 pts en Q4, encore -8 pts en Q1</li>
+          <li>Interviews clients : quasi systématiquement à 0 ou 33% sur tous les trimestres</li>
+          <li>Livre blanc : jamais au-delà de 14% sur les trimestres concernés</li>
+        </ul>
+      </div>
+    </div>
+
+    <span class="editable-label">Observations complémentaires (optionnel)</span>
+    <textarea class="editable" id="observations" placeholder="Ajouter des éléments de contexte, échanges informels, points discutés en entretien..."></textarea>
+  </div>
+
+  <!-- SECTION 2 : PROPOSITION -->
+  <div class="section">
+    <div class="section-title"><span class="num">2</span> La proposition</div>
+
+    <p style="font-size:14px; color:#555; margin-bottom:20px; line-height:1.7;">
+      Face à ce constat, nous souhaitons te proposer un cadre clair pour les prochaines semaines. Cette proposition repose sur notre volonté de t'accompagner vers une performance en ligne avec les attentes du poste.
+    </p>
+
+    <span class="editable-label">Ce que nous proposons</span>
+    <textarea class="editable" id="proposition-texte" style="min-height:120px;">Un plan de performance sur 8 semaines (Q2 2026 — avril à mai), avec des objectifs SMART définis ensemble, un point de suivi hebdomadaire, et un bilan intermédiaire à 4 semaines. Ce plan couvre trois axes prioritaires : la reprise du social selling, la régularité sur TikTok, et l'atteinte des objectifs LinkedIn. Les ressources, outils et accompagnement nécessaires seront mis à disposition. Un bilan final sera réalisé en fin de période.</textarea>
+
+    <span class="editable-label">Ce que nous attendons en retour</span>
+    <textarea class="editable" id="proposition-attentes" style="min-height:100px;">Un engagement actif sur les trois axes définis. Une communication proactive en cas de blocage ou de difficulté. La participation aux points de suivi hebdomadaires. La mise en place autonome des actions prévues dans les délais convenus.</textarea>
+
+    <span class="editable-label">Durée du plan</span>
+    <textarea class="editable" id="proposition-duree" style="min-height:60px;">8 semaines — du [date de démarrage] au [date de fin]. Bilan intermédiaire à 4 semaines. Bilan final à l'issue de la période.</textarea>
+  </div>
+
+  <!-- SECTION 3 : PLAN DE PERFORMANCE -->
+  <div class="section">
+    <div class="section-title"><span class="num">3</span> Plan de performance — Objectifs SMART</div>
+
+    <p style="font-size:13px; color:#888; margin-bottom:20px;">Les objectifs ci-dessous sont définis selon le cadre SMART. Chaque objectif est modifiable. Les deadlines sont indicatives et à valider ensemble.</p>
+
+    <!-- Rappel SMART -->
+    <div class="smart-grid">
+      <div class="smart-card">
+        <div class="smart-letter">S</div>
+        <div class="smart-desc">Spécifique — L'objectif est clairement défini, sans ambiguïté</div>
+      </div>
+      <div class="smart-card">
+        <div class="smart-letter">M</div>
+        <div class="smart-desc">Mesurable — On peut quantifier le résultat attendu</div>
+      </div>
+      <div class="smart-card">
+        <div class="smart-letter">A</div>
+        <div class="smart-desc">Atteignable — L'objectif est réaliste au regard des moyens disponibles</div>
+      </div>
+      <div class="smart-card">
+        <div class="smart-letter">R</div>
+        <div class="smart-desc">Relevant — L'objectif est aligné avec la stratégie de l'entreprise</div>
+      </div>
+      <div class="smart-card" style="grid-column: span 2;">
+        <div class="smart-letter">T</div>
+        <div class="smart-desc">Temporellement défini — Une deadline claire est fixée</div>
+      </div>
+    </div>
+
+    <!-- Axe 1 : Social Selling -->
+    <div style="margin-top:28px;">
+      <div style="font-size:15px; font-weight:700; color:#1a1a2e; margin-bottom:12px; padding:10px 14px; background:#f8f8fc; border-radius:6px;">
+        📌 Axe 1 — Social Selling (priorité absolue)
+      </div>
+      <div class="okr-row header-row">
+        <div>Objectif</div><div>Cible</div><div>Deadline</div><div>Critère de succès</div><div>Statut</div>
+      </div>
+      <div class="okr-row">
+        <div><input class="okr-input" value="Initier des conversations qualifiées sur LinkedIn"></div>
+        <div><input class="okr-input" value="10 conversations"></div>
+        <div><input class="okr-input" value="J+4 semaines"></div>
+        <div><input class="okr-input" value="Tracé dans Notion + reporting hebdo"></div>
+        <div><input class="okr-input" value="À faire"></div>
+      </div>
+      <div class="okr-row">
+        <div><input class="okr-input" value="Générer des leads qualifiés via LinkedIn"></div>
+        <div><input class="okr-input" value="2 leads"></div>
+        <div><input class="okr-input" value="J+8 semaines"></div>
+        <div><input class="okr-input" value="Lead identifié + échange documenté"></div>
+        <div><input class="okr-input" value="À faire"></div>
+      </div>
+      <div class="okr-row">
+        <div><input class="okr-input" value="Mettre en place une routine social selling quotidienne"></div>
+        <div><input class="okr-input" value="15 min/jour — 5j/sem"></div>
+        <div><input class="okr-input" value="J+1 semaine"></div>
+        <div><input class="okr-input" value="Log d'activité partagé chaque vendredi"></div>
+        <div><input class="okr-input" value="À faire"></div>
+      </div>
+    </div>
+
+    <!-- Axe 2 : TikTok -->
+    <div style="margin-top:28px;">
+      <div style="font-size:15px; font-weight:700; color:#1a1a2e; margin-bottom:12px; padding:10px 14px; background:#f8f8fc; border-radius:6px;">
+        📌 Axe 2 — TikTok (reprise de régularité)
+      </div>
+      <div class="okr-row header-row">
+        <div>Objectif</div><div>Cible</div><div>Deadline</div><div>Critère de succès</div><div>Statut</div>
+      </div>
+      <div class="okr-row">
+        <div><input class="okr-input" value="Publier des posts TikTok régulièrement"></div>
+        <div><input class="okr-input" value="2 posts/semaine"></div>
+        <div><input class="okr-input" value="Dès J+1 semaine"></div>
+        <div><input class="okr-input" value="Calendrier éditorial partagé + publication visible"></div>
+        <div><input class="okr-input" value="À faire"></div>
+      </div>
+      <div class="okr-row">
+        <div><input class="okr-input" value="Produire un calendrier éditorial TikTok sur 4 semaines"></div>
+        <div><input class="okr-input" value="1 calendrier validé"></div>
+        <div><input class="okr-input" value="J+1 semaine"></div>
+        <div><input class="okr-input" value="Calendrier partagé et validé avec le manager"></div>
+        <div><input class="okr-input" value="À faire"></div>
+      </div>
+    </div>
+
+    <!-- Axe 3 : LinkedIn -->
+    <div style="margin-top:28px;">
+      <div style="font-size:15px; font-weight:700; color:#1a1a2e; margin-bottom:12px; padding:10px 14px; background:#f8f8fc; border-radius:6px;">
+        📌 Axe 3 — LinkedIn (montée en régularité)
+      </div>
+      <div class="okr-row header-row">
+        <div>Objectif</div><div>Cible</div><div>Deadline</div><div>Critère de succès</div><div>Statut</div>
+      </div>
+      <div class="okr-row">
+        <div><input class="okr-input" value="Publier des posts LinkedIn régulièrement"></div>
+        <div><input class="okr-input" value="4 posts/semaine"></div>
+        <div><input class="okr-input" value="Dès J+1 semaine"></div>
+        <div><input class="okr-input" value="Posts visibles + tracker hebdo"></div>
+        <div><input class="okr-input" value="À faire"></div>
+      </div>
+      <div class="okr-row">
+        <div><input class="okr-input" value="Atteindre un reach LinkedIn cumulé sur la période"></div>
+        <div><input class="okr-input" value="15 000 impressions"></div>
+        <div><input class="okr-input" value="J+8 semaines"></div>
+        <div><input class="okr-input" value="Export LinkedIn Analytics partagé"></div>
+        <div><input class="okr-input" value="À faire"></div>
+      </div>
+      <div class="okr-row">
+        <div><input class="okr-input" value="Réaliser une interview client"></div>
+        <div><input class="okr-input" value="1 interview publiée"></div>
+        <div><input class="okr-input" value="J+6 semaines"></div>
+        <div><input class="okr-input" value="Interview publiée sur LinkedIn + récap partagé"></div>
+        <div><input class="okr-input" value="À faire"></div>
+      </div>
+    </div>
+
+    <!-- Ajouter un objectif -->
+    <div style="margin-top:20px;">
+      <span class="editable-label">Objectif supplémentaire (à définir ensemble)</span>
+      <div class="okr-row" style="border:1px dashed #ccc; border-radius:8px; padding:12px;">
+        <div><input class="okr-input" placeholder="Objectif..."></div>
+        <div><input class="okr-input" placeholder="Cible..."></div>
+        <div><input class="okr-input" placeholder="Deadline..."></div>
+        <div><input class="okr-input" placeholder="Critère..."></div>
+        <div><input class="okr-input" placeholder="Statut..."></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4 : SUIVI -->
+  <div class="section">
+    <div class="section-title"><span class="num">4</span> Moyens de suivi</div>
+
+    <div class="suivi-grid">
+      <div class="suivi-card">
+        <div class="suivi-icon">📅</div>
+        <div class="suivi-title">Point hebdomadaire</div>
+        <div class="suivi-desc">Chaque semaine, bilan des actions réalisées vs planifiées. Durée : 30 min.</div>
+      </div>
+      <div class="suivi-card">
+        <div class="suivi-icon">📊</div>
+        <div class="suivi-title">Bilan intermédiaire — J+4 sem.</div>
+        <div class="suivi-desc">Revue des OKRs SMART à mi-parcours. Ajustement des objectifs si nécessaire.</div>
+      </div>
+      <div class="suivi-card">
+        <div class="suivi-icon">🏁</div>
+        <div class="suivi-title">Bilan final — J+8 sem.</div>
+        <div class="suivi-desc">Évaluation globale des résultats. Décision sur la suite à donner.</div>
+      </div>
+    </div>
+
+    <span class="editable-label">Outil de suivi retenu</span>
+    <textarea class="editable" id="suivi-outil" style="min-height:60px;">Notion — tableau de bord OKRs partagé, mis à jour chaque vendredi avant 18h par Emerique. Accessible en consultation par le manager à tout moment.</textarea>
+
+    <span class="editable-label">Format du reporting hebdomadaire</span>
+    <textarea class="editable" id="suivi-format" style="min-height:80px;">Chaque vendredi, Emerique partage un récapitulatif court comprenant : (1) les actions réalisées dans la semaine, (2) les métriques mises à jour dans le tracker OKRs, (3) les éventuels blocages identifiés, (4) le plan pour la semaine suivante.</textarea>
+  </div>
+
+  <!-- SECTION 5 : ATTENTES COMPORTEMENTALES -->
+  <div class="section">
+    <div class="section-title"><span class="num">5</span> Cadre & attentes comportementales</div>
+
+    <div class="attente-item">
+      <div class="attente-icon">🎯</div>
+      <div class="attente-content">
+        <h4>Proactivité</h4>
+        <p>Ne pas attendre le point hebdomadaire pour signaler un blocage ou un retard. Toute difficulté doit être remontée dès qu'elle est identifiée.</p>
+      </div>
+    </div>
+    <div class="attente-item">
+      <div class="attente-icon">📣</div>
+      <div class="attente-content">
+        <h4>Communication</h4>
+        <p>Être disponible et réactive lors des échanges avec le manager. Répondre aux messages dans un délai raisonnable (24h ouvrées).</p>
+      </div>
+    </div>
+    <div class="attente-item">
+      <div class="attente-icon">✅</div>
+      <div class="attente-content">
+        <h4>Respect des engagements</h4>
+        <p>Les deadlines fixées dans ce plan sont des engagements. Tout décalage doit être anticipé et communiqué, pas constaté après coup.</p>
+      </div>
+    </div>
+    <div class="attente-item">
+      <div class="attente-icon">📈</div>
+      <div class="attente-content">
+        <h4>Orientation résultats</h4>
+        <p>L'évaluation porte sur les résultats obtenus, pas uniquement sur l'activité. Publier du contenu est nécessaire ; générer de l'impact est l'objectif.</p>
+      </div>
+    </div>
+    <div class="attente-item">
+      <div class="attente-icon">🤝</div>
+      <div class="attente-content">
+        <h4>Engagement dans le plan</h4>
+        <p>La signature de ce document marque un engagement mutuel. L'entreprise s'engage à fournir les ressources nécessaires ; Emerique s'engage à mettre en œuvre les actions définies.</p>
+      </div>
+    </div>
+
+    <span class="editable-label">Observations complémentaires sur le cadre comportemental</span>
+    <textarea class="editable" id="attentes-obs" placeholder="Ajouter des points discutés lors de l'entretien..."></textarea>
+  </div>
+
+  <!-- SECTION 6 : PROCHAINES ÉTAPES -->
+  <div class="section">
+    <div class="section-title"><span class="num">6</span> Prochaines étapes</div>
+
+    <div class="etape-item">
+      <div class="etape-num">1</div>
+      <div class="etape-content">
+        <h4>Lecture et validation du document</h4>
+        <p>Emerique prend le temps nécessaire pour lire ce document, poser ses questions et faire part de ses remarques avant toute signature.</p>
+      </div>
+    </div>
+    <div class="etape-item">
+      <div class="etape-num">2</div>
+      <div class="etape-content">
+        <h4>Réunion de cadrage — J+3 jours max</h4>
+        <p>Un échange dédié pour finaliser les objectifs SMART ensemble, valider les deadlines et s'assurer de la compréhension mutuelle des attentes.</p>
+      </div>
+    </div>
+    <div class="etape-item">
+      <div class="etape-num">3</div>
+      <div class="etape-content">
+        <h4>Mise en place du tracker OKRs — J+1 semaine</h4>
+        <p>Création du tableau de bord Notion partagé. Premier remplissage à date de démarrage du plan.</p>
+      </div>
+    </div>
+    <div class="etape-item">
+      <div class="etape-num">4</div>
+      <div class="etape-content">
+        <h4>Démarrage officiel du plan</h4>
+        <p>Le plan entre en vigueur à la date indiquée après signature des deux parties.</p>
+      </div>
+    </div>
+    <div class="etape-item">
+      <div class="etape-num">5</div>
+      <div class="etape-content">
+        <h4>Bilan intermédiaire — J+4 semaines</h4>
+        <p>Revue des résultats à mi-parcours. Réajustement possible des objectifs en fonction du contexte.</p>
+      </div>
+    </div>
+    <div class="etape-item">
+      <div class="etape-num">6</div>
+      <div class="etape-content">
+        <h4>Bilan final — J+8 semaines</h4>
+        <p>Évaluation globale. Un nouvel échange sera planifié pour discuter de la suite.</p>
+      </div>
+    </div>
+
+    <span class="editable-label">Notes prises lors de l'entretien</span>
+    <textarea class="editable" id="etapes-notes" placeholder="Réactions, questions posées, points à clarifier..."></textarea>
+  </div>
+
+  <!-- SIGNATURES -->
+  <div class="section">
+    <div class="section-title"><span class="num">7</span> Signatures</div>
+    <p style="font-size:13px; color:#555; margin-bottom:16px;">Ce document a été lu et discuté entre les deux parties. La signature atteste de la prise de connaissance du plan et de l'engagement à le mettre en œuvre.</p>
+    <div class="signature-grid">
+      <div class="sig-box">
+        <h4>Le manager</h4>
+        <p>Nom, Prénom — Fonction</p>
+        <div class="sig-line"></div>
+        <p style="font-size:11px; color:#aaa; margin-top:6px;">Date : _______________</p>
+      </div>
+      <div class="sig-box">
+        <h4>Emerique Henri</h4>
+        <p>Chargée de Marketing</p>
+        <div class="sig-line"></div>
+        <p style="font-size:11px; color:#aaa; margin-top:6px;">Date : _______________</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- BARRE DE SAUVEGARDE -->
+<div class="save-bar">
+  <span class="save-status" id="save-status">Modifications non sauvegardées</span>
+  <div>
+    <button class="btn-print" onclick="window.print()">🖨️ Imprimer</button>
+    <button class="btn-save" onclick="saveAll()">💾 Sauvegarder</button>
+  </div>
+</div>
+
+<script>
+  const FIELDS = [
+    'observations', 'proposition-texte', 'proposition-attentes', 'proposition-duree',
+    'suivi-outil', 'suivi-format', 'attentes-obs', 'etapes-notes'
+  ];
+
+  function saveAll() {
+    // Textareas
+    FIELDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) localStorage.setItem('perf_' + id, el.value);
+    });
+
+    // OKR inputs
+    const inputs = document.querySelectorAll('.okr-input');
+    inputs.forEach((input, i) => {
+      localStorage.setItem('perf_okr_' + i, input.value);
+    });
+
+    const status = document.getElementById('save-status');
+    status.textContent = '✅ Sauvegardé — ' + new Date().toLocaleTimeString('fr-FR');
+    status.className = 'save-status saved';
+    setTimeout(() => {
+      status.textContent = 'Toutes les modifications sont sauvegardées';
+    }, 3000);
+  }
+
+  function loadAll() {
+    FIELDS.forEach(id => {
+      const saved = localStorage.getItem('perf_' + id);
+      const el = document.getElementById(id);
+      if (saved !== null && el) el.value = saved;
+    });
+
+    const inputs = document.querySelectorAll('.okr-input');
+    inputs.forEach((input, i) => {
+      const saved = localStorage.getItem('perf_okr_' + i);
+      if (saved !== null) input.value = saved;
+    });
+  }
+
+  // Marquer comme non sauvegardé dès modification
+  document.addEventListener('input', () => {
+    const status = document.getElementById('save-status');
+    status.textContent = 'Modifications non sauvegardées';
+    status.className = 'save-status';
+  });
+
+  // Sauvegarde auto toutes les 60s
+  setInterval(saveAll, 60000);
+
+  // Chargement au démarrage
+  window.onload = loadAll;
+</script>
+
+</body>
+</html>
