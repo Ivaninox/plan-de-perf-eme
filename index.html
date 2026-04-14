@@ -4,513 +4,823 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Plan de Performance — Émérique Henri</title>
+<link href="https://fonts.googleapis.com/css2?family=Overpass:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #1a1a2e; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  /* NAV */
-  .nav { display: flex; background: #1a1a2e; overflow-x: auto; position: sticky; top: 0; z-index: 100; }
-  .nav button { flex: 1; min-width: 130px; padding: 16px 12px; background: none; border: none; color: #8892a4; font-size: 13px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; white-space: nowrap; }
-  .nav button:hover { color: #fff; background: rgba(255,255,255,0.05); }
-  .nav button.active { color: #fff; border-bottom: 3px solid #4f8ef7; }
+body {
+  font-family: 'Overpass', sans-serif;
+  background: #f7f9fb;
+  color: #23272A;
+}
 
-  /* SECTIONS */
-  .section { display: none; max-width: 900px; margin: 40px auto; padding: 0 24px 60px; }
-  .section.active { display: block; }
+/* NAV */
+.nav {
+  display: flex;
+  background: #23272A;
+  overflow-x: auto;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 3px solid #60EED2;
+}
+.nav button {
+  flex: 1;
+  min-width: 140px;
+  padding: 18px 12px;
+  background: none;
+  border: none;
+  color: #8892a4;
+  font-family: 'Overpass', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -3px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.nav button:hover { color: #fff; background: rgba(255,255,255,0.05); }
+.nav button.active { color: #60EED2; border-bottom: 3px solid #60EED2; }
 
-  /* CARDS */
-  .card { background: #fff; border-radius: 12px; padding: 32px; margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-  .card h2 { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #1a1a2e; }
-  .card h3 { font-size: 16px; font-weight: 600; margin: 24px 0 12px; color: #1a1a2e; }
-  .card p { line-height: 1.7; color: #444; margin-bottom: 12px; }
-  .card ul { padding-left: 20px; color: #444; line-height: 1.9; }
+/* HEADER */
+.page-header {
+  background: #23272A;
+  padding: 48px 24px 40px;
+  text-align: center;
+}
+.page-header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.page-header p {
+  color: #8892a4;
+  font-size: 15px;
+}
+.page-header .accent { color: #60EED2; }
 
-  /* BADGE */
-  .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 16px; }
-  .badge.alert { background: #fff0f0; color: #e53935; }
-  .badge.info { background: #e8f0fe; color: #1a73e8; }
-  .badge.success { background: #e8f5e9; color: #2e7d32; }
-  .badge.warning { background: #fff8e1; color: #f57f17; }
+/* SECTIONS */
+.section { display: none; max-width: 1100px; margin: 40px auto; padding: 0 32px 80px; }
+.section.active { display: block; }
 
-  /* TABLE */
-  table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-  th { background: #f4f6f9; padding: 12px 16px; text-align: left; font-size: 13px; color: #666; font-weight: 600; }
-  td { padding: 12px 16px; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #fafafa; }
+/* CARD */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 36px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  border-left: 4px solid transparent;
+}
+.card.accent-border { border-left: 4px solid #60EED2; }
+.card.dark {
+  background: #23272A;
+  color: #fff;
+}
+.card.dark p, .card.dark li { color: #c8cfd8; }
+.card.dark h2, .card.dark h3 { color: #fff; }
 
-  /* OBJECTIFS GRID */
-  .obj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
-  .obj-card { background: #f8f9fc; border-radius: 10px; padding: 20px; border-left: 4px solid #4f8ef7; }
-  .obj-card.green { border-left-color: #34a853; }
-  .obj-card h4 { font-size: 13px; color: #888; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .obj-card .val { font-size: 28px; font-weight: 800; color: #1a1a2e; }
-  .obj-card .sub { font-size: 12px; color: #999; margin-top: 4px; }
+.card h2 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+.card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 28px 0 12px;
+  color: #23272A;
+}
+.card p { line-height: 1.8; color: #444; margin-bottom: 12px; font-size: 15px; }
+.card ul { padding-left: 22px; color: #444; line-height: 2; font-size: 15px; }
+.card ul li { margin-bottom: 4px; }
 
-  /* SUIVI TABLE */
-  .suivi-table { width: 100%; border-collapse: collapse; }
-  .suivi-table th { background: #1a1a2e; color: #fff; padding: 12px 16px; font-size: 13px; text-align: center; }
-  .suivi-table td { padding: 10px 16px; border: 1px solid #e8e8e8; text-align: center; font-size: 14px; }
-  .suivi-table td:first-child { text-align: left; font-weight: 600; background: #f8f9fc; }
-  .suivi-table input[type="number"] { width: 70px; padding: 6px 8px; border: 1px solid #ddd; border-radius: 6px; text-align: center; font-size: 14px; }
-  .suivi-table .target { font-size: 11px; color: #999; display: block; }
+/* BADGE */
+.badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.badge.alert { background: #fff0f0; color: #e53935; }
+.badge.info { background: #e8faf6; color: #00a87a; }
+.badge.neutral { background: #f0f2f5; color: #555; }
+.badge.dark-badge { background: rgba(96,238,210,0.15); color: #60EED2; }
 
-  /* CHECKLIST */
-  .checklist-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px; border-radius: 10px; margin-bottom: 10px; background: #f8f9fc; cursor: pointer; transition: background 0.2s; }
-  .checklist-item:hover { background: #eef2ff; }
-  .checklist-item.done { background: #e8f5e9; }
-  .checklist-item input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; accent-color: #34a853; cursor: pointer; flex-shrink: 0; }
-  .checklist-item label { font-size: 14px; line-height: 1.6; color: #333; cursor: pointer; }
-  .checklist-item.done label { text-decoration: line-through; color: #999; }
+/* SECTION TITLE */
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #60EED2;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e8eaf0;
+}
 
-  /* SIGNATURE */
-  .sig-block { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 24px; }
-  .sig-box { border: 1px solid #ddd; border-radius: 10px; padding: 24px; text-align: center; }
-  .sig-box h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-  .sig-box p { font-size: 12px; color: #888; margin-bottom: 20px; }
-  .sig-box .sig-line { border-top: 2px solid #1a1a2e; margin-top: 60px; padding-top: 8px; font-size: 12px; color: #666; }
-  .sig-date { margin-top: 12px; font-size: 13px; }
-  .sig-date input { border: none; border-bottom: 1px solid #ccc; padding: 4px 8px; font-size: 13px; width: 150px; text-align: center; }
+/* STATS GRID */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.stat-box {
+  background: #f7f9fb;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #e8eaf0;
+}
+.stat-box .stat-val {
+  font-size: 28px;
+  font-weight: 800;
+  color: #23272A;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-box .stat-val.green { color: #60EED2; }
+.stat-box .stat-val.red { color: #e53935; }
+.stat-box .stat-label { font-size: 12px; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
-  /* PRINT BTN */
-  .print-btn { display: block; margin: 0 auto 32px; padding: 12px 32px; background: #1a1a2e; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
-  .print-btn:hover { background: #2d2d4e; }
+/* QUARTER TABLE */
+.q-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
+.q-table th {
+  background: #23272A;
+  color: #60EED2;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.q-table td { padding: 12px 16px; border-bottom: 1px solid #f0f2f5; color: #444; }
+.q-table tr:last-child td { border-bottom: none; }
+.q-table tr:hover td { background: #f7f9fb; }
+.q-table .score { font-weight: 800; font-size: 16px; }
+.score-bad { color: #e53935; }
+.score-mid { color: #f59e0b; }
+.score-ok { color: #60EED2; }
 
-  /* DIVIDER */
-  .divider { height: 1px; background: #f0f0f0; margin: 24px 0; }
+/* OKR CARDS */
+.okr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 16px;
+}
+.okr-card {
+  background: #f7f9fb;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #e8eaf0;
+  border-top: 3px solid #60EED2;
+}
+.okr-card h4 { font-size: 14px; font-weight: 800; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; color: #23272A; }
+.okr-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #e8eaf0; font-size: 14px; }
+.okr-item:last-child { border-bottom: none; }
+.okr-item .label { color: #555; }
+.okr-item .target { font-weight: 800; color: #23272A; }
 
-  /* ALERT BOX */
-  .alert-box { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; font-size: 14px; line-height: 1.7; color: #555; }
-  .alert-box strong { color: #1a1a2e; }
+/* SCENARIO CARDS */
+.scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 16px; }
+.scenario-card { border-radius: 12px; padding: 24px; border: 1px solid #e8eaf0; }
+.scenario-card.green { background: #e8faf6; border-color: #60EED2; }
+.scenario-card.yellow { background: #fffbea; border-color: #f59e0b; }
+.scenario-card.orange { background: #fff4e5; border-color: #f97316; }
+.scenario-card h4 { font-size: 14px; font-weight: 800; margin-bottom: 10px; }
+.scenario-card p { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
 
-  @media print {
-    .nav, .print-btn { display: none; }
-    .section { display: block !important; }
-  }
+/* ENGAGEMENTS */
+.engage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16px; }
+@media (max-width: 640px) { .engage-grid { grid-template-columns: 1fr; } }
+.engage-box { background: #f7f9fb; border-radius: 12px; padding: 24px; border: 1px solid #e8eaf0; }
+.engage-box h4 { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; color: #23272A; }
+.engage-box ul { padding-left: 20px; }
+.engage-box ul li { font-size: 14px; line-height: 1.9; color: #444; }
 
-  @media (max-width: 600px) {
-    .obj-grid { grid-template-columns: 1fr; }
-    .sig-block { grid-template-columns: 1fr; }
-  }
+/* CHECKLIST */
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid #e8eaf0;
+  margin-bottom: 12px;
+  background: #fff;
+  transition: all 0.2s;
+}
+.checklist-item.done { background: #e8faf6; border-color: #60EED2; }
+.checklist-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: #60EED2; margin-top: 2px; flex-shrink: 0; cursor: pointer; }
+.checklist-item label { font-size: 15px; line-height: 1.6; color: #23272A; cursor: pointer; }
+.checklist-item.done label { text-decoration: line-through; color: #888; }
+
+/* SIGNATURE */
+.sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16px; }
+@media (max-width: 640px) { .sig-grid { grid-template-columns: 1fr; } }
+.sig-box { background: #f7f9fb; border-radius: 12px; padding: 24px; border: 1px solid #e8eaf0; text-align: center; }
+.sig-box p { font-size: 14px; color: #888; margin-bottom: 8px; }
+.sig-box strong { font-size: 16px; font-weight: 800; display: block; margin-bottom: 12px; }
+.sig-box input[type="date"] {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: 'Overpass', sans-serif;
+  font-size: 14px;
+  color: #23272A;
+  background: #fff;
+}
+
+/* PRINT BTN */
+.print-btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  background: #60EED2;
+  color: #23272A;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Overpass', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: background 0.2s;
+}
+.print-btn:hover { background: #3dd9b8; }
+
+/* SUIVI TABLE */
+.suivi-section-title {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #60EED2;
+  padding: 12px 16px;
+  background: #23272A;
+}
+.suivi-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 0; }
+.suivi-table th {
+  background: #2d3238;
+  color: #c8cfd8;
+  padding: 12px 16px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.suivi-table th:first-child { text-align: left; }
+.suivi-table td { padding: 10px 16px; border-bottom: 1px solid #f0f2f5; text-align: center; }
+.suivi-table td:first-child { text-align: left; font-weight: 600; font-size: 13px; color: #555; }
+.suivi-table tr:hover td { background: #f7f9fb; }
+.suivi-table input[type="number"] {
+  width: 60px;
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  text-align: center;
+  font-family: 'Overpass', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+.suivi-table input[type="number"]:focus { outline: none; border-color: #60EED2; }
+.suivi-table .total-row td { background: #e8faf6; font-weight: 800; color: #23272A; font-size: 15px; }
+.suivi-table .target-row td { background: #f7f9fb; color: #888; font-size: 13px; font-style: italic; }
+.suivi-table .obj-row td { background: #f0f2f5; color: #555; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+
+.suivi-block {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  margin-bottom: 28px;
+}
+
+/* PROGRESS BAR */
+.progress-wrap { margin-top: 4px; background: #f0f2f5; border-radius: 10px; height: 6px; overflow: hidden; }
+.progress-bar { height: 6px; background: #60EED2; border-radius: 10px; transition: width 0.4s; }
+
+@media print {
+  .nav { display: none; }
+  .section { display: block !important; }
+  .print-btn { display: none; }
+}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<div class="nav">
+<div class="page-header">
+  <h1>Plan de Performance — <span class="accent">Émérique Henri</span></h1>
+  <p>Marketing Digital · Flying For You · Avril – Mai 2026</p>
+</div>
+
+<nav class="nav">
   <button class="active" onclick="showTab('constat')">📋 Constat</button>
   <button onclick="showTab('proposition')">💡 Proposition</button>
-  <button onclick="showTab('perf')">🎯 Plan de perf</button>
-  <button onclick="showTab('cadre')">📌 Cadre & attentes</button>
+  <button onclick="showTab('objectifs')">🎯 Objectifs</button>
+  <button onclick="showTab('cadre')">📌 Cadre & Attentes</button>
   <button onclick="showTab('etapes')">✅ Prochaines étapes</button>
   <button onclick="showTab('suivi')">📊 Suivi 6 semaines</button>
-</div>
+</nav>
 
-<!-- ===== CONSTAT ===== -->
-<div class="section active" id="constat">
-  <div class="card">
-    <span class="badge alert">⚠️ Situation actuelle</span>
-    <h2>Constat — Émérique Henri</h2>
-    <p style="color:#888; font-size:13px;">Document établi par Ivan Messias · Période concernée : Q2 2026</p>
-    <div class="divider"></div>
+<!-- ═══════════════════════════════════════════ CONSTAT -->
+<div id="tab-constat" class="section active">
 
-    <h3>Contexte</h3>
-    <p>Émérique Henri est en alternance depuis plusieurs mois au sein de l'équipe. Malgré un potentiel réel et une intégration progressive, un écart significatif a été constaté entre les attentes du poste et les livrables produits à ce stade.</p>
-
-    <h3>Points de vigilance identifiés</h3>
-    <ul>
-      <li>Volume de production insuffisant sur les réseaux sociaux</li>
-      <li>Absence ou irrégularité dans la démarche de social selling</li>
-      <li>Manque de cadrage sur les objectifs quantitatifs hebdomadaires</li>
-      <li>Communication interne perfectible sur les avancées et blocages</li>
-    </ul>
-
-    <div class="divider"></div>
-    <div class="alert-box">
-      <strong>Ce document ne constitue pas une sanction.</strong> Il formalise un cadre de travail clair, partagé et mesurable pour permettre à Émérique de performer sur le Q2 2026 dans les meilleures conditions.
-    </div>
-  </div>
-</div>
-
-<!-- ===== PROPOSITION ===== -->
-<div class="section" id="proposition">
-  <div class="card">
-    <span class="badge info">💡 Proposition d'accompagnement</span>
-    <h2>Notre proposition</h2>
-    <div class="divider"></div>
-
-    <h3>Ce que nous proposons</h3>
-    <p>Face au constat établi, Ivan Messias propose à Émérique Henri un <strong>plan de performance structuré sur 6 semaines</strong> (du 20 avril au 29 mai 2026), avec :</p>
-    <ul>
-      <li>Des <strong>objectifs clairs et mesurables</strong> par mois (avril, mai, juin)</li>
-      <li>Un <strong>point hebdomadaire</strong> de 30 minutes pour suivre les avancées</li>
-      <li>Un <strong>tableau de bord de suivi</strong> accessible en temps réel</li>
-      <li>Un <strong>feedback structuré</strong> à mi-parcours (fin de la 3ème semaine)</li>
-      <li>Un <strong>bilan final</strong> à l'issue des 6 semaines</li>
-    </ul>
-
-    <div class="divider"></div>
-
-    <h3>L'esprit de la démarche</h3>
-    <p>Ce plan n'est pas un ultimatum. C'est un contrat de confiance mutuelle. Ivan s'engage à fournir les ressources, le feedback et la disponibilité nécessaires. Émérique s'engage à produire, communiquer et progresser.</p>
-
-    <div class="divider"></div>
-
-    <h3>Ce qui se passe à l'issue des 6 semaines</h3>
-    <table>
-      <tr><th>Scénario</th><th>Conséquence</th></tr>
-      <tr><td>✅ Objectifs atteints à +80%</td><td>Bilan positif, poursuite dans les conditions normales</td></tr>
-      <tr><td>⚠️ Objectifs partiellement atteints (50-80%)</td><td>Point approfondi, ajustements et prolongation possible</td></tr>
-      <tr><td>❌ Objectifs non atteints (&lt;50%)</td><td>Remontée RH formelle et révision du contrat d'alternance</td></tr>
-    </table>
-  </div>
-</div>
-
-<!-- ===== PLAN DE PERF ===== -->
-<div class="section" id="perf">
-  <div class="card">
-    <span class="badge info">🎯 Objectifs Q2 2026</span>
-    <h2>Plan de performance — Objectifs</h2>
-    <p style="color:#888; font-size:13px;">Période : Avril → Juin 2026</p>
-    <div class="divider"></div>
-
-    <h3>🔵 Social Selling</h3>
-    <table>
-      <tr><th>Indicateur</th><th>Avril</th><th>Mai</th><th>Juin</th><th>Total Q2</th></tr>
-      <tr><td>Contacts touchés</td><td>90</td><td>90</td><td>90</td><td><strong>270</strong></td></tr>
-      <tr><td>Conversations générées</td><td>15</td><td>15</td><td>15</td><td><strong>45</strong></td></tr>
-      <tr><td>Leads qualifiés</td><td>1</td><td>4</td><td>5</td><td><strong>10</strong></td></tr>
-    </table>
-
-    <h3>🟢 Social Media</h3>
-    <table>
-      <tr><th>Indicateur</th><th>Avril</th><th>Mai</th><th>Juin</th><th>Total Q2</th></tr>
-      <tr><td>Posts tous réseaux</td><td>25</td><td>25</td><td>25</td><td><strong>75</strong></td></tr>
-      <tr><td>Posts LinkedIn (inclus dans les 75)</td><td>10</td><td>10</td><td>10</td><td><strong>30</strong></td></tr>
-      <tr><td>Articles</td><td>6</td><td>6</td><td>6</td><td><strong>18</strong></td></tr>
-      <tr><td>Vidéos YouTube</td><td>1</td><td>1</td><td>1</td><td><strong>3</strong></td></tr>
-      <tr><td>Reach LinkedIn (impressions)</td><td>10 925</td><td>12 565</td><td>14 450</td><td>—</td></tr>
-      <tr><td>Reach Instagram (impressions)</td><td>21 850</td><td>25 127</td><td>28 890</td><td>—</td></tr>
-    </table>
-
-    <div class="divider"></div>
-    <div class="obj-grid">
-      <div class="obj-card">
-        <h4>Leads Q2</h4>
-        <div class="val">10</div>
-        <div class="sub">1 en avril · 4 en mai · 5 en juin</div>
-      </div>
-      <div class="obj-card green">
-        <h4>Contacts Q2</h4>
-        <div class="val">270</div>
-        <div class="sub">90 / mois en continu</div>
-      </div>
-      <div class="obj-card">
-        <h4>Posts Q2</h4>
-        <div class="val">75</div>
-        <div class="sub">dont 30 LinkedIn · 18 articles · 3 vidéos</div>
-      </div>
-      <div class="obj-card green">
-        <h4>Reach LI fin juin</h4>
-        <div class="val">14 450</div>
-        <div class="sub">impressions mensuelles cibles</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== CADRE & ATTENTES ===== -->
-<div class="section" id="cadre">
-  <div class="card">
-    <span class="badge warning">📌 Cadre de travail</span>
-    <h2>Cadre & attentes</h2>
-    <div class="divider"></div>
-
-    <h3>Ce qu'on attend d'Émérique</h3>
-    <ul>
-      <li><strong>Remplir le tableau de suivi chaque semaine</strong> avant le point hebdo (chiffres réels, pas estimés)</li>
-      <li><strong>Respecter les volumes définis</strong> dans le plan — pas de rattrapage en fin de mois</li>
-      <li><strong>Signaler les blocages immédiatement</strong>, pas en fin de semaine</li>
-      <li><strong>Être force de proposition</strong> sur les contenus et les cibles social selling</li>
-      <li><strong>Respecter les délais</strong> de publication et de remontée d'informations</li>
-    </ul>
-
-    <div class="divider"></div>
-
-    <h3>Ce qu'Ivan s'engage à fournir</h3>
-    <ul>
-      <li>Un <strong>point hebdomadaire de 30 min</strong> chaque semaine sans exception</li>
-      <li>Des <strong>retours clairs et constructifs</strong> sous 48h sur les livrables</li>
-      <li>L'accès aux <strong>ressources, outils et contacts</strong> nécessaires</li>
-      <li>Un <strong>environnement de travail bienveillant</strong> mais exigeant</li>
-    </ul>
-
-    <div class="divider"></div>
-
-    <h3>Règles non négociables</h3>
-    <table>
-      <tr><th>Règle</th><th>Pourquoi</th></tr>
-      <tr><td>Les chiffres du suivi sont réels ou nuls</td><td>La confiance repose sur la transparence</td></tr>
-      <tr><td>Pas de ghosting sur les points hebdo</td><td>Le suivi est la base du plan</td></tr>
-      <tr><td>Les objectifs sont fixes sauf accord écrit</td><td>Évite les renégociations de confort</td></tr>
-    </table>
-  </div>
-</div>
-
-<!-- ===== PROCHAINES ÉTAPES + SIGNATURES ===== -->
-<div class="section" id="etapes">
-  <div class="card">
-    <span class="badge success">✅ Prochaines étapes</span>
-    <h2>Actions à valider</h2>
-    <p style="color:#888; font-size:13px;">Cochez chaque étape une fois réalisée — la progression est enregistrée.</p>
-    <div class="divider"></div>
-
-    <div id="checklist">
-      <div class="checklist-item" id="item-1">
-        <input type="checkbox" id="c1" onchange="saveCheck('c1')">
-        <label for="c1"><strong>Lecture complète du document</strong><br>Émérique et Ivan ont lu l'intégralité du plan de performance.</label>
-      </div>
-      <div class="checklist-item" id="item-2">
-        <input type="checkbox" id="c2" onchange="saveCheck('c2')">
-        <label for="c2"><strong>Point de lancement planifié</strong><br>Un créneau de 45 min a été bloqué dans les agendas pour la semaine du 20 avril.</label>
-      </div>
-      <div class="checklist-item" id="item-3">
-        <input type="checkbox" id="c3" onchange="saveCheck('c3')">
-        <label for="c3"><strong>Outils de tracking mis en place</strong><br>Le tableau de suivi est accessible et Émérique sait comment le remplir.</label>
-      </div>
-      <div class="checklist-item" id="item-4">
-        <input type="checkbox" id="c4" onchange="saveCheck('c4')">
-        <label for="c4"><strong>Planning de contenu semaine 1 validé</strong><br>Les 5-6 premiers posts et les 20 premiers contacts sont identifiés.</label>
-      </div>
-      <div class="checklist-item" id="item-5">
-        <input type="checkbox" id="c5" onchange="saveCheck('c5')">
-        <label for="c5"><strong>Point hebdo récurrent créé</strong><br>Un événement récurrent de 30 min est posé chaque semaine jusqu'au 29 mai.</label>
-      </div>
-      <div class="checklist-item" id="item-6">
-        <input type="checkbox" id="c6" onchange="saveCheck('c6')">
-        <label for="c6"><strong>Document signé par les deux parties</strong><br>Signatures manuscrites apposées ci-dessous.</label>
-      </div>
-    </div>
+  <div class="card accent-border">
+    <div class="badge alert">⚠️ Contexte</div>
+    <h2>Situation actuelle</h2>
+    <p>Émérique est en alternance depuis plusieurs mois au sein de Flying For You sur le pôle marketing digital. Malgré un potentiel réel et des compétences identifiées, les derniers quarters montrent des résultats en-deçà des attentes sur les axes principaux : production de contenu, social selling et portée LinkedIn.</p>
+    <p>Ce plan de performance vise à poser un cadre clair, bienveillant et outillé pour les 6 prochaines semaines.</p>
   </div>
 
   <div class="card">
-    <h2>Signatures</h2>
-    <p>En signant ce document, les deux parties reconnaissent avoir pris connaissance du plan, des objectifs et du cadre définis ci-dessus, et s'engagent à les respecter.</p>
-    <div class="divider"></div>
+    <div class="section-title">Historique des performances</div>
+    <h2>Résultats par quarter</h2>
 
-    <div class="sig-block">
-      <div class="sig-box">
-        <h4>Ivan Messias</h4>
-        <p>Manager · Responsable du plan</p>
-        <div class="sig-line">Signature</div>
-        <div class="sig-date">
-          Date : <input type="text" placeholder="jj/mm/aaaa" id="date-manager">
-        </div>
-      </div>
-      <div class="sig-box">
-        <h4>Émérique Henri</h4>
-        <p>Alternante · Concernée par le plan</p>
-        <div class="sig-line">Signature</div>
-        <div class="sig-date">
-          Date : <input type="text" placeholder="jj/mm/aaaa" id="date-alt">
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top:32px; text-align:center;">
-      <button class="print-btn" onclick="window.print()">🖨️ Imprimer pour signature manuscrite</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== SUIVI 6 SEMAINES ===== -->
-<div class="section" id="suivi">
-  <div class="card">
-    <span class="badge info">📊 Tableau de suivi</span>
-    <h2>Suivi semaine par semaine</h2>
-    <p style="color:#888; font-size:13px;">Période : 20 avril → 29 mai 2026 · À remplir chaque semaine avant le point hebdo</p>
-    <div class="divider"></div>
-
-    <div style="overflow-x:auto;">
-    <table class="suivi-table">
+    <table class="q-table">
       <thead>
         <tr>
-          <th style="text-align:left;">Indicateur</th>
-          <th>S1<br><span style="font-size:11px;font-weight:400;">20-25 avr</span></th>
-          <th>S2<br><span style="font-size:11px;font-weight:400;">28 avr-2 mai</span></th>
-          <th>S3<br><span style="font-size:11px;font-weight:400;">5-9 mai</span></th>
-          <th>S4<br><span style="font-size:11px;font-weight:400;">12-16 mai</span></th>
-          <th>S5<br><span style="font-size:11px;font-weight:400;">19-23 mai</span></th>
-          <th>S6<br><span style="font-size:11px;font-weight:400;">26-29 mai</span></th>
-          <th>TOTAL</th>
+          <th>Période</th>
+          <th>Score global</th>
+          <th>TikTok</th>
+          <th>LinkedIn posts</th>
+          <th>LinkedIn reach</th>
+          <th>Social Selling</th>
+          <th>Tendance</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Contacts touchés<span class="target">Cible : ~22/sem</span></td>
-          <td><input type="number" min="0" id="s1_contacts" oninput="calcTotal('contacts')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s2_contacts" oninput="calcTotal('contacts')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s3_contacts" oninput="calcTotal('contacts')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s4_contacts" oninput="calcTotal('contacts')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s5_contacts" oninput="calcTotal('contacts')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s6_contacts" oninput="calcTotal('contacts')" placeholder="0"></td>
-          <td><strong id="total_contacts">0</strong><span class="target">/ 180</span></td>
+          <td><strong>Q3 2025</strong></td>
+          <td><span class="score score-mid">52%</span></td>
+          <td>4 posts</td>
+          <td>6 posts</td>
+          <td>4 200 imp.</td>
+          <td>Non démarré</td>
+          <td>—</td>
         </tr>
         <tr>
-          <td>Conversations<span class="target">Cible : ~4/sem</span></td>
-          <td><input type="number" min="0" id="s1_conv" oninput="calcTotal('conv')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s2_conv" oninput="calcTotal('conv')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s3_conv" oninput="calcTotal('conv')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s4_conv" oninput="calcTotal('conv')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s5_conv" oninput="calcTotal('conv')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s6_conv" oninput="calcTotal('conv')" placeholder="0"></td>
-          <td><strong id="total_conv">0</strong><span class="target">/ 30</span></td>
+          <td><strong>Q4 2025</strong></td>
+          <td><span class="score score-mid">58%</span></td>
+          <td>6 posts</td>
+          <td>8 posts</td>
+          <td>5 800 imp.</td>
+          <td>Non démarré</td>
+          <td>↗ +6pts</td>
         </tr>
         <tr>
-          <td>Leads<span class="target">Cible : 5 sur 6 sem</span></td>
-          <td><input type="number" min="0" id="s1_leads" oninput="calcTotal('leads')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s2_leads" oninput="calcTotal('leads')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s3_leads" oninput="calcTotal('leads')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s4_leads" oninput="calcTotal('leads')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s5_leads" oninput="calcTotal('leads')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s6_leads" oninput="calcTotal('leads')" placeholder="0"></td>
-          <td><strong id="total_leads">0</strong><span class="target">/ 5</span></td>
-        </tr>
-        <tr>
-          <td>Posts RS<span class="target">Cible : ~8-9/sem</span></td>
-          <td><input type="number" min="0" id="s1_posts" oninput="calcTotal('posts')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s2_posts" oninput="calcTotal('posts')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s3_posts" oninput="calcTotal('posts')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s4_posts" oninput="calcTotal('posts')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s5_posts" oninput="calcTotal('posts')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s6_posts" oninput="calcTotal('posts')" placeholder="0"></td>
-          <td><strong id="total_posts">0</strong><span class="target">/ 50</span></td>
-        </tr>
-        <tr>
-          <td>Posts LinkedIn<span class="target">Cible : ~3-4/sem</span></td>
-          <td><input type="number" min="0" id="s1_lkd" oninput="calcTotal('lkd')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s2_lkd" oninput="calcTotal('lkd')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s3_lkd" oninput="calcTotal('lkd')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s4_lkd" oninput="calcTotal('lkd')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s5_lkd" oninput="calcTotal('lkd')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s6_lkd" oninput="calcTotal('lkd')" placeholder="0"></td>
-          <td><strong id="total_lkd">0</strong><span class="target">/ 20</span></td>
-        </tr>
-        <tr>
-          <td>Articles<span class="target">Cible : ~2/sem</span></td>
-          <td><input type="number" min="0" id="s1_articles" oninput="calcTotal('articles')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s2_articles" oninput="calcTotal('articles')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s3_articles" oninput="calcTotal('articles')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s4_articles" oninput="calcTotal('articles')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s5_articles" oninput="calcTotal('articles')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s6_articles" oninput="calcTotal('articles')" placeholder="0"></td>
-          <td><strong id="total_articles">0</strong><span class="target">/ 12</span></td>
-        </tr>
-        <tr>
-          <td>Vidéos YouTube<span class="target">Cible : 1 sur la période</span></td>
-          <td><input type="number" min="0" id="s1_yt" oninput="calcTotal('yt')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s2_yt" oninput="calcTotal('yt')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s3_yt" oninput="calcTotal('yt')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s4_yt" oninput="calcTotal('yt')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s5_yt" oninput="calcTotal('yt')" placeholder="0"></td>
-          <td><input type="number" min="0" id="s6_yt" oninput="calcTotal('yt')" placeholder="0"></td>
-          <td><strong id="total_yt">0</strong><span class="target">/ 1</span></td>
+          <td><strong>Q1 2026</strong></td>
+          <td><span class="score score-bad">41%</span></td>
+          <td>2 posts</td>
+          <td>5 posts</td>
+          <td>4 100 imp.</td>
+          <td>Initié — 12 contacts</td>
+          <td>↘ −17pts</td>
         </tr>
       </tbody>
     </table>
+
+    <h3>Points de vigilance</h3>
+    <ul>
+      <li><strong>Régularité</strong> — les productions sont concentrées sur certaines semaines, puis absentes</li>
+      <li><strong>TikTok</strong> — le canal est systématiquement sous-alimenté voire abandonné</li>
+      <li><strong>Social Selling</strong> — démarré mais pas encore structuré ni autonome</li>
+      <li><strong>Reporting</strong> — les chiffres remontés ne sont pas toujours documentés en temps réel</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════ PROPOSITION -->
+<div id="tab-proposition" class="section">
+
+  <div class="card accent-border">
+    <div class="badge info">Plan d'action</div>
+    <h2>La proposition</h2>
+    <p>Plutôt que de subir la situation, nous proposons à Émérique un cadre structuré sur 6 semaines pour démontrer sa capacité à tenir ses engagements de manière autonome et régulière.</p>
+    <p>Ce plan n'est pas une sanction — c'est une opportunité de repartir sur des bases claires, avec des objectifs atteignables et un suivi outillé.</p>
+  </div>
+
+  <div class="card">
+    <div class="section-title">À l'issue des 6 semaines</div>
+    <h2>Bilan partagé</h2>
+    <p>Un bilan sera réalisé ensemble à la fin des 6 semaines. L'objectif est que cette période soit un succès — ce plan existe précisément pour y arriver.</p>
+    <p>Trois scénarios sont envisagés selon les résultats :</p>
+
+    <div class="scenario-grid">
+      <div class="scenario-card green">
+        <h4>✅ Objectifs atteints</h4>
+        <p>Les engagements sont tenus sur la durée. La suite de l'alternance se poursuit dans de bonnes conditions, avec une autonomie renforcée sur les projets.</p>
+      </div>
+      <div class="scenario-card yellow">
+        <h4>⚡ Résultats partiels</h4>
+        <p>Des progrès réels sont visibles mais certains axes restent insuffisants. Un nouveau point de cadrage est organisé pour ajuster et continuer.</p>
+      </div>
+      <div class="scenario-card orange">
+        <h4>🔄 Objectifs non atteints</h4>
+        <p>Si les engagements ne sont pas tenus malgré l'accompagnement, une décision concertée sera prise sur la suite du contrat d'alternance.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════ OBJECTIFS -->
+<div id="tab-objectifs" class="section">
+
+  <div class="card">
+    <div class="section-title">Objectifs sur 6 semaines</div>
+    <h2>Plan de performance — Avril › Mai 2026</h2>
+    <p>Semaine 1 : 22 avril &nbsp;·&nbsp; Semaine 6 : 30 mai</p>
+  </div>
+
+  <div class="okr-grid">
+
+    <div class="okr-card">
+      <h4>📱 Social Selling</h4>
+      <div class="okr-item"><span class="label">Contacts touchés / mois</span><span class="target">90</span></div>
+      <div class="okr-item"><span class="label">Conversations engagées / mois</span><span class="target">15</span></div>
+      <div class="okr-item"><span class="label">Lead qualifié sur la période</span><span class="target">1 min.</span></div>
+      <div class="okr-item"><span class="label">Autonomie sur le projet</span><span class="target">Totale S4</span></div>
     </div>
 
-    <div class="divider"></div>
-    <p style="font-size:13px;color:#888;">💾 Les données saisies sont automatiquement sauvegardées dans le navigateur.</p>
+    <div class="okr-card">
+      <h4>🎵 TikTok</h4>
+      <div class="okr-item"><span class="label">Posts / mois</span><span class="target">8</span></div>
+      <div class="okr-item"><span class="label">Posts sur 6 semaines</span><span class="target">12</span></div>
+      <div class="okr-item"><span class="label">Régularité hebdo</span><span class="target">2/sem.</span></div>
+    </div>
+
+    <div class="okr-card">
+      <h4>💼 LinkedIn</h4>
+      <div class="okr-item"><span class="label">Posts / mois</span><span class="target">10</span></div>
+      <div class="okr-item"><span class="label">Articles / mois</span><span class="target">6</span></div>
+      <div class="okr-item"><span class="label">Impressions sur 6 semaines</span><span class="target">10 925</span></div>
+      <div class="okr-item"><span class="label">Hausse vs Q1 2026</span><span class="target">+15%</span></div>
+    </div>
+
   </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════ CADRE -->
+<div id="tab-cadre" class="section">
+
+  <div class="card accent-border">
+    <div class="badge info">Engagements mutuels</div>
+    <h2>Ce qui est attendu des deux côtés</h2>
+    <p>Ce plan repose sur un engagement bilatéral. Les deux parties s'y tiennent.</p>
+  </div>
+
+  <div class="engage-grid">
+    <div class="engage-box">
+      <h4>Ce qu'on attend d'Émérique</h4>
+      <ul>
+        <li>Remplir le tableau de suivi chaque semaine <strong>avant le point hebdo</strong> — chiffres réels, pas estimés</li>
+        <li>Être force de proposition sur les contenus et les cibles social selling</li>
+        <li>Prendre en charge le projet social selling de manière <strong>totalement autonome</strong> à partir de la semaine 4</li>
+        <li>Maintenir une <strong>régularité constante</strong> tout au long des 6 semaines — pas de sprints suivis de creux</li>
+        <li>Respecter les délais de production et les fréquences de publication définies</li>
+        <li>Signaler proactivement tout blocage plutôt que de laisser des semaines sans production</li>
+      </ul>
+    </div>
+    <div class="engage-box">
+      <h4>Ce qu'Ivan s'engage à fournir</h4>
+      <ul>
+        <li>Un point hebdo dédié pour faire le bilan et débloquer les obstacles</li>
+        <li>Des retours clairs et rapides sur les contenus soumis</li>
+        <li>Un accès aux ressources et outils nécessaires</li>
+        <li>Une disponibilité pour accompagner la montée en autonomie sur le social selling</li>
+        <li>Un cadre bienveillant et des feedbacks constructifs tout au long des 6 semaines</li>
+        <li>La validation des briefs de contenu en début de semaine si soumis à temps</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════ ÉTAPES -->
+<div id="tab-etapes" class="section">
+
+  <div class="card">
+    <div class="section-title">Checklist de lancement</div>
+    <h2>Prochaines étapes</h2>
+    <p>À valider avant ou lors de la réunion du <strong>vendredi 17 avril</strong>.</p>
+  </div>
+
+  <div class="checklist-item" id="ci1">
+    <input type="checkbox" id="c1" onchange="toggleCheck(this)">
+    <label for="c1">
+      <strong>Plan présenté et discuté</strong><br>
+      Ce plan sera présenté et discuté lors de la réunion du vendredi 17 avril. Les deux parties confirment leur accord.
+    </label>
+  </div>
+
+  <div class="checklist-item" id="ci2">
+    <input type="checkbox" id="c2" onchange="toggleCheck(this)">
+    <label for="c2">
+      <strong>Planning de contenu semaine 1 validé</strong><br>
+      Les sujets, formats et dates de publication des contenus de la première semaine sont définis et validés ensemble.
+    </label>
+  </div>
+
+  <div class="checklist-item" id="ci3">
+    <input type="checkbox" id="c3" onchange="toggleCheck(this)">
+    <label for="c3">
+      <strong>Cibles social selling semaine 1 identifiées</strong><br>
+      Les 15 à 20 premiers contacts à approcher sont listés avec leur profil et l'approche envisagée.
+    </label>
+  </div>
+
+  <div class="checklist-item" id="ci4">
+    <input type="checkbox" id="c4" onchange="toggleCheck(this)">
+    <label for="c4">
+      <strong>Outil de suivi activé</strong><br>
+      Le tableau de suivi (cet outil ou Notion) est accessible et Émérique sait comment le remplir.
+    </label>
+  </div>
+
+  <div class="checklist-item" id="ci5">
+    <input type="checkbox" id="c5" onchange="toggleCheck(this)">
+    <label for="c5">
+      <strong>Point hebdo intégré au suivi</strong><br>
+      Le point hebdo existant intègre désormais un temps dédié au suivi de ce plan de performance.
+    </label>
+  </div>
+
+  <div class="checklist-item" id="ci6">
+    <input type="checkbox" id="c6" onchange="toggleCheck(this)">
+    <label for="c6">
+      <strong>Plan signé par les deux parties</strong><br>
+      Les deux signatures sont posées ci-dessous — le plan est officiellement activé.
+    </label>
+  </div>
+
+  <div class="card" style="margin-top: 32px;">
+    <div class="section-title">Signatures</div>
+    <div class="sig-grid">
+      <div class="sig-box">
+        <p>Manager</p>
+        <strong>Ivan [NOM]</strong>
+        <input type="date" id="date-manager" onchange="saveData()">
+      </div>
+      <div class="sig-box">
+        <p>Alternant(e)</p>
+        <strong>Émérique Henri</strong>
+        <input type="date" id="date-alt" onchange="saveData()">
+      </div>
+    </div>
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimer / Exporter en PDF</button>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════ SUIVI -->
+<div id="tab-suivi" class="section">
+
+  <div class="card" style="margin-bottom: 28px;">
+    <div class="section-title">Tableau de bord</div>
+    <h2>Suivi des 6 semaines</h2>
+    <p>Remplis les cases chaque semaine avant le point hebdo. Les totaux se calculent automatiquement.</p>
+    <div id="progress-global" style="margin-top: 16px;"></div>
+  </div>
+
+  <!-- SOCIAL SELLING -->
+  <div class="suivi-block">
+    <div class="suivi-section-title">📱 Social Selling</div>
+    <table class="suivi-table">
+      <thead>
+        <tr>
+          <th>Indicateur</th>
+          <th>S1<br><small>22 avr</small></th>
+          <th>S2<br><small>29 avr</small></th>
+          <th>S3<br><small>6 mai</small></th>
+          <th>S4<br><small>13 mai</small></th>
+          <th>S5<br><small>20 mai</small></th>
+          <th>S6<br><small>27 mai</small></th>
+          <th>Total</th>
+          <th>Objectif</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Contacts touchés</td>
+          <td><input type="number" id="ss_ct_1" min="0" oninput="calcRow('ss_ct', 6, 'ss_ct_total', 180)"></td>
+          <td><input type="number" id="ss_ct_2" min="0" oninput="calcRow('ss_ct', 6, 'ss_ct_total', 180)"></td>
+          <td><input type="number" id="ss_ct_3" min="0" oninput="calcRow('ss_ct', 6, 'ss_ct_total', 180)"></td>
+          <td><input type="number" id="ss_ct_4" min="0" oninput="calcRow('ss_ct', 6, 'ss_ct_total', 180)"></td>
+          <td><input type="number" id="ss_ct_5" min="0" oninput="calcRow('ss_ct', 6, 'ss_ct_total', 180)"></td>
+          <td><input type="number" id="ss_ct_6" min="0" oninput="calcRow('ss_ct', 6, 'ss_ct_total', 180)"></td>
+          <td id="ss_ct_total" class="total-row" style="font-weight:800;">0</td>
+          <td>180</td>
+        </tr>
+        <tr>
+          <td>Conversations engagées</td>
+          <td><input type="number" id="ss_cv_1" min="0" oninput="calcRow('ss_cv', 6, 'ss_cv_total', 30)"></td>
+          <td><input type="number" id="ss_cv_2" min="0" oninput="calcRow('ss_cv', 6, 'ss_cv_total', 30)"></td>
+          <td><input type="number" id="ss_cv_3" min="0" oninput="calcRow('ss_cv', 6, 'ss_cv_total', 30)"></td>
+          <td><input type="number" id="ss_cv_4" min="0" oninput="calcRow('ss_cv', 6, 'ss_cv_total', 30)"></td>
+          <td><input type="number" id="ss_cv_5" min="0" oninput="calcRow('ss_cv', 6, 'ss_cv_total', 30)"></td>
+          <td><input type="number" id="ss_cv_6" min="0" oninput="calcRow('ss_cv', 6, 'ss_cv_total', 30)"></td>
+          <td id="ss_cv_total" class="total-row" style="font-weight:800;">0</td>
+          <td>30</td>
+        </tr>
+        <tr>
+          <td>Leads qualifiés</td>
+          <td><input type="number" id="ss_ld_1" min="0" oninput="calcRow('ss_ld', 6, 'ss_ld_total', 1)"></td>
+          <td><input type="number" id="ss_ld_2" min="0" oninput="calcRow('ss_ld', 6, 'ss_ld_total', 1)"></td>
+          <td><input type="number" id="ss_ld_3" min="0" oninput="calcRow('ss_ld', 6, 'ss_ld_total', 1)"></td>
+          <td><input type="number" id="ss_ld_4" min="0" oninput="calcRow('ss_ld', 6, 'ss_ld_total', 1)"></td>
+          <td><input type="number" id="ss_ld_5" min="0" oninput="calcRow('ss_ld', 6, 'ss_ld_total', 1)"></td>
+          <td><input type="number" id="ss_ld_6" min="0" oninput="calcRow('ss_ld', 6, 'ss_ld_total', 1)"></td>
+          <td id="ss_ld_total" class="total-row" style="font-weight:800;">0</td>
+          <td>1+</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TIKTOK -->
+  <div class="suivi-block">
+    <div class="suivi-section-title">🎵 TikTok</div>
+    <table class="suivi-table">
+      <thead>
+        <tr>
+          <th>Indicateur</th>
+          <th>S1<br><small>22 avr</small></th>
+          <th>S2<br><small>29 avr</small></th>
+          <th>S3<br><small>6 mai</small></th>
+          <th>S4<br><small>13 mai</small></th>
+          <th>S5<br><small>20 mai</small></th>
+          <th>S6<br><small>27 mai</small></th>
+          <th>Total</th>
+          <th>Objectif</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Posts publiés</td>
+          <td><input type="number" id="tt_1" min="0" oninput="calcRow('tt', 6, 'tt_total', 12)"></td>
+          <td><input type="number" id="tt_2" min="0" oninput="calcRow('tt', 6, 'tt_total', 12)"></td>
+          <td><input type="number" id="tt_3" min="0" oninput="calcRow('tt', 6, 'tt_total', 12)"></td>
+          <td><input type="number" id="tt_4" min="0" oninput="calcRow('tt', 6, 'tt_total', 12)"></td>
+          <td><input type="number" id="tt_5" min="0" oninput="calcRow('tt', 6, 'tt_total', 12)"></td>
+          <td><input type="number" id="tt_6" min="0" oninput="calcRow('tt', 6, 'tt_total', 12)"></td>
+          <td id="tt_total" class="total-row" style="font-weight:800;">0</td>
+          <td>12</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- LINKEDIN -->
+  <div class="suivi-block">
+    <div class="suivi-section-title">💼 LinkedIn</div>
+    <table class="suivi-table">
+      <thead>
+        <tr>
+          <th>Indicateur</th>
+          <th>S1<br><small>22 avr</small></th>
+          <th>S2<br><small>29 avr</small></th>
+          <th>S3<br><small>6 mai</small></th>
+          <th>S4<br><small>13 mai</small></th>
+          <th>S5<br><small>20 mai</small></th>
+          <th>S6<br><small>27 mai</small></th>
+          <th>Total</th>
+          <th>Objectif</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Posts publiés</td>
+          <td><input type="number" id="lk_p_1" min="0" oninput="calcRow('lk_p', 6, 'lk_p_total', 15)"></td>
+          <td><input type="number" id="lk_p_2" min="0" oninput="calcRow('lk_p', 6, 'lk_p_total', 15)"></td>
+          <td><input type="number" id="lk_p_3" min="0" oninput="calcRow('lk_p', 6, 'lk_p_total', 15)"></td>
+          <td><input type="number" id="lk_p_4" min="0" oninput="calcRow('lk_p', 6, 'lk_p_total', 15)"></td>
+          <td><input type="number" id="lk_p_5" min="0" oninput="calcRow('lk_p', 6, 'lk_p_total', 15)"></td>
+          <td><input type="number" id="lk_p_6" min="0" oninput="calcRow('lk_p', 6, 'lk_p_total', 15)"></td>
+          <td id="lk_p_total" class="total-row" style="font-weight:800;">0</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <td>Articles publiés</td>
+          <td><input type="number" id="lk_a_1" min="0" oninput="calcRow('lk_a', 6, 'lk_a_total', 9)"></td>
+          <td><input type="number" id="lk_a_2" min="0" oninput="calcRow('lk_a', 6, 'lk_a_total', 9)"></td>
+          <td><input type="number" id="lk_a_3" min="0" oninput="calcRow('lk_a', 6, 'lk_a_total', 9)"></td>
+          <td><input type="number" id="lk_a_4" min="0" oninput="calcRow('lk_a', 6, 'lk_a_total', 9)"></td>
+          <td><input type="number" id="lk_a_5" min="0" oninput="calcRow('lk_a', 6, 'lk_a_total', 9)"></td>
+          <td><input type="number" id="lk_a_6" min="0" oninput="calcRow('lk_a', 6, 'lk_a_total', 9)"></td>
+          <td id="lk_a_total" class="total-row" style="font-weight:800;">0</td>
+          <td>9</td>
+        </tr>
+        <tr>
+          <td>Impressions</td>
+          <td><input type="number" id="lk_i_1" min="0" oninput="calcRow('lk_i', 6, 'lk_i_total', 10925)"></td>
+          <td><input type="number" id="lk_i_2" min="0" oninput="calcRow('lk_i', 6, 'lk_i_total', 10925)"></td>
+          <td><input type="number" id="lk_i_3" min="0" oninput="calcRow('lk_i', 6, 'lk_i_total', 10925)"></td>
+          <td><input type="number" id="lk_i_4" min="0" oninput="calcRow('lk_i', 6, 'lk_i_total', 10925)"></td>
+          <td><input type="number" id="lk_i_5" min="0" oninput="calcRow('lk_i', 6, 'lk_i_total', 10925)"></td>
+          <td><input type="number" id="lk_i_6" min="0" oninput="calcRow('lk_i', 6, 'lk_i_total', 10925)"></td>
+          <td id="lk_i_total" class="total-row" style="font-weight:800;">0</td>
+          <td>10 925</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
 
 <script>
-  // TABS
-  function showTab(id) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    event.target.classList.add('active');
-  }
+// TABS
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
 
-  // TOTAUX SUIVI
-  function calcTotal(key) {
-    let total = 0;
+// CHECKLIST
+function toggleCheck(cb) {
+  const item = cb.closest('.checklist-item');
+  item.classList.toggle('done', cb.checked);
+  saveData();
+}
+
+// CALC ROW
+function calcRow(prefix, weeks, totalId, obj) {
+  let sum = 0;
+  for (let i = 1; i <= weeks; i++) {
+    const el = document.getElementById(prefix + '_' + i);
+    if (el && el.value) sum += parseInt(el.value) || 0;
+  }
+  const totalEl = document.getElementById(totalId);
+  if (totalEl) {
+    totalEl.textContent = sum.toLocaleString('fr-FR');
+    const pct = Math.min(100, Math.round((sum / obj) * 100));
+    totalEl.style.color = pct >= 100 ? '#60EED2' : pct >= 60 ? '#f59e0b' : '#e53935';
+  }
+  saveData();
+}
+
+// SAVE / LOAD
+function saveData() {
+  const data = {};
+  const rows = ['ss_ct','ss_cv','ss_ld','tt','lk_p','lk_a','lk_i'];
+  rows.forEach(r => {
     for (let i = 1; i <= 6; i++) {
-      const el = document.getElementById('s' + i + '_' + key);
-      if (el) total += parseInt(el.value) || 0;
+      const el = document.getElementById(r + '_' + i);
+      if (el) data[r + '_' + i] = el.value;
     }
-    document.getElementById('total_' + key).textContent = total;
-    saveData();
+  });
+  for (let i = 1; i <= 6; i++) {
+    const cb = document.getElementById('c' + i);
+    if (cb) data['c' + i] = cb.checked;
   }
+  const dm = document.getElementById('date-manager');
+  const da = document.getElementById('date-alt');
+  if (dm) data['date_manager'] = dm.value;
+  if (da) data['date_alt'] = da.value;
+  localStorage.setItem('planperf_eme', JSON.stringify(data));
+}
 
-  // CHECKLIST
-  function saveCheck(id) {
-    const cb = document.getElementById(id);
-    const item = cb.closest('.checklist-item');
-    if (cb.checked) {
-      item.classList.add('done');
-    } else {
-      item.classList.remove('done');
-    }
-    saveData();
-  }
-
-  // SAVE / LOAD (localStorage)
-  function saveData() {
-    const data = {};
-    // suivi inputs
-    ['contacts','conv','leads','posts','lkd','articles','yt'].forEach(key => {
-      for (let i = 1; i <= 6; i++) {
-        const el = document.getElementById('s' + i + '_' + key);
-        if (el) data['s' + i + '_' + key] = el.value;
-      }
-    });
-    // checkboxes
+function loadData() {
+  const raw = localStorage.getItem('planperf_eme');
+  if (!raw) return;
+  const data = JSON.parse(raw);
+  const rows = ['ss_ct','ss_cv','ss_ld','tt','lk_p','lk_a','lk_i'];
+  const objs = { ss_ct: 180, ss_cv: 30, ss_ld: 1, tt: 12, lk_p: 15, lk_a: 9, lk_i: 10925 };
+  rows.forEach(r => {
     for (let i = 1; i <= 6; i++) {
-      const cb = document.getElementById('c' + i);
-      if (cb) data['c' + i] = cb.checked;
+      const el = document.getElementById(r + '_' + i);
+      if (el && data[r + '_' + i] !== undefined) el.value = data[r + '_' + i];
     }
-    // dates
-    data['date_manager'] = document.getElementById('date-manager').value;
-    data['date_alt'] = document.getElementById('date-alt').value;
-    localStorage.setItem('planperf_emerique', JSON.stringify(data));
-  }
-
-  function loadData() {
-    const raw = localStorage.getItem('planperf_emerique');
-    if (!raw) return;
-    const data = JSON.parse(raw);
-    // suivi
-    ['contacts','conv','leads','posts','lkd','articles','yt'].forEach(key => {
-      for (let i = 1; i <= 6; i++) {
-        const el = document.getElementById('s' + i + '_' + key);
-        if (el && data['s' + i + '_' + key] !== undefined) {
-          el.value = data['s' + i + '_' + key];
-        }
-      }
-      calcTotal(key);
-    });
-    // checkboxes
-    for (let i = 1; i <= 6; i++) {
-      const cb = document.getElementById('c' + i);
-      if (cb && data['c' + i]) {
-        cb.checked = true;
-        cb.closest('.checklist-item').classList.add('done');
-      }
+    calcRow(r, 6, r + '_total', objs[r]);
+  });
+  for (let i = 1; i <= 6; i++) {
+    const cb = document.getElementById('c' + i);
+    if (cb && data['c' + i]) {
+      cb.checked = true;
+      cb.closest('.checklist-item').classList.add('done');
     }
-    // dates
-    if (data['date_manager']) document.getElementById('date-manager').value = data['date_manager'];
-    if (data['date_alt']) document.getElementById('date-alt').value = data['date_alt'];
   }
+  const dm = document.getElementById('date-manager');
+  const da = document.getElementById('date-alt');
+  if (dm && data['date_manager']) dm.value = data['date_manager'];
+  if (da && data['date_alt']) da.value = data['date_alt'];
+}
 
-  // DATE AUTO-SAVE
-  document.getElementById('date-manager').addEventListener('input', saveData);
-  document.getElementById('date-alt').addEventListener('input', saveData);
-
-  // INIT
-  loadData();
+loadData();
 </script>
 </body>
 </html>
